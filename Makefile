@@ -6,21 +6,18 @@ BUILDDIR = build
 SRCS = thread.c scheduler.c dispatcher.c signal_handler.c concurrency.c main.c
 OBJS = $(patsubst %.c,$(BUILDDIR)/%.o,$(SRCS))
 
-all: $(BUILDDIR) scheduler signal_sender
-
-$(BUILDDIR):
-	mkdir -p $(BUILDDIR)
+all: $(BUILDDIR) scheduler
 
 scheduler: $(OBJS)
 	$(CC) $(CFLAGS) -o $@ $^
 
-signal_sender: $(BUILDDIR)/signal_sender.o
-	$(CC) $(CFLAGS) -o $@ $^
+$(BUILDDIR):
+	mkdir -p $(BUILDDIR)
 
 $(BUILDDIR)/%.o: $(SRCDIR)/%.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	rm -rf $(BUILDDIR) scheduler signal_sender
+	rm -rf $(BUILDDIR) scheduler
 
 .PHONY: all clean
