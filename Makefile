@@ -3,7 +3,7 @@ CFLAGS = -Wall -Wextra -I include
 SRCDIR = src
 BUILDDIR = build
 
-SRCS = thread.c scheduler.c dispatcher.c signal_handler.c main.c
+SRCS = thread.c scheduler.c dispatcher.c signal_handler.c concurrency.c main.c
 OBJS = $(patsubst %.c,$(BUILDDIR)/%.o,$(SRCS))
 
 all: $(BUILDDIR) scheduler signal_sender

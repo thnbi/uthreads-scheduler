@@ -12,7 +12,7 @@ int main(int argc, char *argv[]) {
     pid_t pid = atoi(argv[1]);
 
     while (1) {
-        sleep(1);
+        usleep(10000);
         if (kill(pid, SIGUSR1) == -1)
             break;
     }
