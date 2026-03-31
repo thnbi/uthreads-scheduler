@@ -8,7 +8,7 @@
 #include "signal_handler.h"
 #include "concurrency.h"
 
-#define QUANTUM_US 10000
+#define QUANTUM_US 1000000
 
 static pid_t start_signal_sender(void) {
     pid_t pid = fork();
