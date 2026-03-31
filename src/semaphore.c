@@ -1,6 +1,7 @@
 #include <signal.h>
 #include <stddef.h>
 #include "semaphore.h"
+#include "ready_queue.h"
 #include "thread.h"
 
 void sem_init_(Semaphore *s, int value) {
@@ -40,6 +41,7 @@ void sem_post_(Semaphore *s) {
             s->waiting[i - 1] = s->waiting[i];
         s->wait_count--;
         threads[tid].state = THREAD_READY;
+        ready_queue_push(&threads[tid]);
     }
 
     sigprocmask(SIG_SETMASK, &prev, NULL);

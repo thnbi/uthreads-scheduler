@@ -1,11 +1,10 @@
-#include "thread.h"
+#include <stddef.h>
+#include "ready_queue.h"
 #include "scheduler.h"
 
 int scheduler_next(void) {
-    for (int i = 1; i <= NUM_THREADS; i++) {
-        int idx = (current_thread + i) % NUM_THREADS;
-        if (threads[idx].state == THREAD_READY || threads[idx].state == THREAD_RUNNING)
-            return idx;
-    }
-    return -1;
+    Thread *t = ready_queue_pop();
+    if (!t)
+        return -1;
+    return t->id;
 }

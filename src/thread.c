@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "thread.h"
+#include "ready_queue.h"
 
 Thread threads[NUM_THREADS];
 int current_thread = -1;
@@ -30,6 +31,8 @@ void thread_create(int id, void (*function)(void)) {
     t->context.uc_stack.ss_size = STACK_SIZE;
     t->context.uc_link = &main_context;
     makecontext(&t->context, (void (*)(void))thread_entry, 1, id);
+
+    ready_queue_push(t);
 }
 
 void threads_cleanup(void) {
