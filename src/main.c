@@ -43,15 +43,8 @@ int main(int argc, char *argv[]) {
 
     pid_t sender = start_signal_sender();
 
-    current_thread = 0;
-    threads[0].state = THREAD_RUNNING;
-    printf("[Thread 0] executando\n");
-    swapcontext(&main_context, &threads[0].context);
-
-    while (1) {
-        int next = scheduler_next();
-        if (next < 0)
-            break;
+    int next;
+    while ((next = scheduler_next()) >= 0) {
         current_thread = next;
         threads[next].state = THREAD_RUNNING;
         printf("[Thread %d] executando\n", next);
