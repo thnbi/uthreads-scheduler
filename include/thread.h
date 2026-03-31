@@ -9,6 +9,7 @@
 typedef enum {
     THREAD_READY,
     THREAD_RUNNING,
+    THREAD_BLOCKED,
     THREAD_FINISHED
 } ThreadState;
 

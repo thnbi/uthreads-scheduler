@@ -1,13 +1,15 @@
 #include <stdio.h>
-#include <signal.h>
 #include <string.h>
 #include "concurrency.h"
+#include "semaphore.h"
 #include "thread.h"
 
 static int shared_array[SHARED_ARRAY_SIZE];
+static Semaphore mutex;
 
 void shared_array_reset(void) {
     memset(shared_array, 0, sizeof(shared_array));
+    sem_init_(&mutex, 1);
 }
 
 void thread_function_unsafe(void) {
@@ -21,18 +23,14 @@ void thread_function_unsafe(void) {
 }
 
 void thread_function_safe(void) {
-    sigset_t block, prev;
-    sigemptyset(&block);
-    sigaddset(&block, SIGUSR1);
-
     for (int iter = 0; iter < ITERATIONS; iter++) {
-        sigprocmask(SIG_BLOCK, &block, &prev);
+        sem_wait_(&mutex);
         for (int i = 0; i < SHARED_ARRAY_SIZE; i++) {
             int temp = shared_array[i];
             temp = temp + 1;
             shared_array[i] = temp;
         }
-        sigprocmask(SIG_SETMASK, &prev, NULL);
+        sem_post_(&mutex);
     }
 }
 
