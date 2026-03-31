@@ -13,12 +13,13 @@ typedef enum {
     THREAD_FINISHED
 } ThreadState;
 
-typedef struct {
+typedef struct Thread {
     ucontext_t context;
     char *stack;
     int id;
     ThreadState state;
     void (*work_fn)(void);
+    struct Thread *next;
 } Thread;
 
 extern Thread threads[NUM_THREADS];
